@@ -4,6 +4,9 @@ import os
 from dotenv import load_dotenv
 import dj_database_url
 
+# CORS হেডারের ডিফল্ট লিস্ট ইমপোর্ট
+from corsheaders.defaults import default_headers
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / '.env')
 
@@ -20,12 +23,12 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
 ]
 
+# ফ্রন্টএন্ডের ঠিকানা (একবারই ডিফাইন করুন, পুরো ফাইলে আর কোথাও নয়)
+FRONTEND_URL = "https://qpaper-frontend.onrender.com"
+
 CSRF_TRUSTED_ORIGINS = [
     'https://qpaper-backend-tefq.onrender.com',
-]
-
-CORS_ALLOWED_ORIGINS = [
-    "https://qpaper-frontend.onrender.com", 
+    FRONTEND_URL,
 ]
 
 # Render-এ HTTPS প্রক্সির পেছনে থাকার কারণে
@@ -50,11 +53,10 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.security.SecurityMiddleware',          # প্রথমে
-    'whitenoise.middleware.WhiteNoiseMiddleware',             # SecurityMiddleware-এর ঠিক পরে
-    
+    'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',          # সেশন মিডলওয়্যারের পরে, Common-এর আগে
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -99,11 +101,10 @@ TIME_ZONE = 'Asia/Dhaka'
 USE_I18N = True
 USE_TZ = True
 
-# ---------- স্ট্যাটিক ও মিডিয়া ----------
+# ---------- স্ট্যাটিক ও মিডিয়া ----------
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# Django 5.x-এ STATICFILES_STORAGE বিলুপ্ত; STORAGES ব্যবহার করুন
 STORAGES = {
     "default": {
         "BACKEND": "django.core.files.storage.FileSystemStorage",
@@ -134,9 +135,16 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
 }
 
-# ---------- CORS ----------
-# প্রোডাকশনে নির্দিষ্ট ফ্রন্টএন্ড URL দিন, সব অনুমোদন নয়
+# ---------- CORS (একবারই ডিফাইন করুন) ----------
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOWED_ORIGINS = [
-    # উদাহরণ: "https://your-frontend.onrender.com",
+    FRONTEND_URL,
 ]
+
+# JWT ব্যবহার করলে Authorization হেডারটি explicitly অনুমোদন করতে হবে
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    "authorization",
+]
+
+# ফ্রন্টএন্ড থেকে কুকি/ক্রেডেনশিয়াল পাঠালে এটি প্রয়োজন
+CORS_ALLOW_CREDENTIALS = True
