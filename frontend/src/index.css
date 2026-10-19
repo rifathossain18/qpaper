@@ -1,0 +1,328 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+  body { @apply bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans; }
+  ::selection { @apply bg-indigo-200 dark:bg-indigo-900 text-indigo-900 dark:text-indigo-100; }
+}
+
+@layer components {
+  .card {
+    @apply bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/70 dark:border-slate-800
+           shadow-[0_1px_2px_rgba(15,23,42,0.04),0_4px_12px_-4px_rgba(15,23,42,0.04)]
+           dark:shadow-[0_1px_2px_rgba(0,0,0,0.3),0_4px_12px_-4px_rgba(0,0,0,0.2)];
+  }
+  .card-hover {
+    @apply transition-all duration-200
+           hover:shadow-[0_4px_16px_-4px_rgba(15,23,42,0.08)]
+           dark:hover:shadow-[0_4px_16px_-4px_rgba(0,0,0,0.4)]
+           hover:border-slate-300/70 dark:hover:border-slate-700;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl font-medium text-sm
+           transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed
+           focus:outline-none focus:ring-4 focus:ring-offset-1 focus:ring-indigo-500/20 dark:focus:ring-offset-slate-950;
+  }
+  .btn-primary {
+    @apply btn bg-gradient-to-r from-indigo-600 to-violet-600 text-white px-4 py-2.5
+           shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/30 hover:brightness-110 active:scale-[0.98];
+  }
+  .btn-secondary {
+    @apply btn bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700
+           text-slate-700 dark:text-slate-200 px-4 py-2.5
+           hover:bg-slate-50 dark:hover:bg-slate-700 active:scale-[0.98];
+  }
+  .btn-ghost {
+    @apply btn text-slate-600 dark:text-slate-400 px-3 py-1.5
+           hover:bg-slate-100 dark:hover:bg-slate-800
+           hover:text-slate-900 dark:hover:text-slate-100;
+  }
+  .btn-danger {
+    @apply btn bg-rose-600 text-white px-4 py-2.5 hover:bg-rose-700
+           shadow-lg shadow-rose-500/20 active:scale-[0.98];
+  }
+  .input {
+    @apply w-full rounded-xl border border-slate-200 dark:border-slate-700
+           bg-white dark:bg-slate-800 px-3.5 py-2.5 text-sm
+           text-slate-900 dark:text-slate-100
+           placeholder:text-slate-400 dark:placeholder:text-slate-500 transition-all
+           focus:outline-none focus:ring-4 focus:ring-indigo-500/10
+           focus:border-indigo-500 dark:focus:border-indigo-400;
+  }
+  .label {
+    @apply block text-xs font-semibold uppercase tracking-wider
+           text-slate-500 dark:text-slate-400 mb-1.5;
+  }
+  .pill { @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[11px] font-semibold; }
+  .page-title { @apply text-2xl lg:text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100 font-display; }
+  .page-sub { @apply text-sm text-slate-500 dark:text-slate-400 mt-1; }
+  .section-title { @apply text-base font-semibold text-slate-900 dark:text-slate-100 font-display; }
+  .stat-value { @apply text-3xl lg:text-4xl font-display font-bold text-slate-900 dark:text-slate-100 tracking-tight; }
+  .stat-label { @apply text-[11px] font-semibold uppercase tracking-widest text-slate-500 dark:text-slate-400; }
+  .divider { @apply border-slate-100 dark:border-slate-800; }
+
+  /* ══════════════════════════════════════════════════════
+     PAPER SHEET — always light, per-template variables
+     ══════════════════════════════════════════════════════ */
+  .paper-sheet {
+    --p-bg: #fdfcf7;
+    --p-ink: #0f172a;
+    --p-ink-soft: #475569;
+    --p-accent: #1e3a8a;
+    --p-rule: rgba(30, 58, 138, 0.2);
+    --p-rule-strong: rgba(15, 23, 42, 0.8);
+    --p-font-heading: 'Playfair Display', Georgia, serif;
+    --p-font-body: 'Inter', system-ui, sans-serif;
+    --p-font-mono: 'JetBrains Mono', ui-monospace, monospace;
+    --p-letter-spacing: 0.02em;
+
+    position: relative;
+    background-color: var(--p-bg);
+    color: var(--p-ink);
+    font-family: var(--p-font-body);
+    border-radius: 3px;
+    box-shadow:
+      0 2px 4px rgba(15, 23, 42, 0.06),
+      0 24px 48px -12px rgba(15, 23, 42, 0.18);
+    background-image:
+      radial-gradient(circle at 20% 10%, rgba(120, 100, 60, 0.025) 0%, transparent 50%),
+      radial-gradient(circle at 80% 90%, rgba(120, 100, 60, 0.02) 0%, transparent 50%);
+  }
+  .paper-sheet::before {
+    content: '';
+    @apply absolute inset-0 pointer-events-none;
+    border-radius: 3px;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.04);
+  }
+
+  .paper-institution {
+    font-family: var(--p-font-heading);
+    font-weight: 700;
+    color: var(--p-ink);
+    letter-spacing: var(--p-letter-spacing);
+  }
+  .paper-exam {
+    font-family: var(--p-font-heading);
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--p-accent);
+    letter-spacing: 0.18em;
+  }
+  .paper-section-title {
+    font-family: var(--p-font-heading);
+    font-weight: 700;
+    color: var(--p-ink);
+    font-size: 1.2rem;
+    letter-spacing: -0.005em;
+  }
+  .paper-question-text {
+    font-family: var(--p-font-body);
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--p-ink);
+  }
+  .paper-option {
+    font-family: var(--p-font-body);
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--p-ink-soft);
+  }
+  .paper-marks-badge {
+    font-family: var(--p-font-mono);
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--p-ink);
+    background: rgba(0, 0, 0, 0.04);
+    border: 1px solid var(--p-rule);
+    border-radius: 4px;
+    padding: 3px 8px;
+    display: inline-flex;
+    align-items: center;
+    font-variant-numeric: tabular-nums;
+  }
+  .paper-marks-badge.is-overridden {
+    background: rgba(245, 158, 11, 0.1);
+    border-color: rgba(245, 158, 11, 0.35);
+    color: #92400e;
+  }
+  .paper-q-number {
+    font-family: var(--p-font-mono);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--p-ink);
+    border: 1px solid var(--p-rule);
+    width: 30px;
+    height: 30px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-variant-numeric: tabular-nums;
+    flex-shrink: 0;
+  }
+  .paper-q-number.is-plain {
+    border: none;
+    border-radius: 0;
+    width: auto;
+    height: auto;
+    min-width: 1.4rem;
+  }
+  .paper-q-number.is-square {
+    border-radius: 4px;
+  }
+  .paper-q-number.is-filled {
+    background: var(--p-accent);
+    color: #ffffff;
+    border-color: var(--p-accent);
+  }
+
+  /* ══════════════════════════════════════════════════════
+     TEMPLATE OVERRIDES
+     ══════════════════════════════════════════════════════ */
+
+  /* 1. CLASSIC — Playfair serif, navy */
+  .paper-sheet[data-template="classic"] {
+    --p-bg: #fdfcf7;
+    --p-accent: #1e3a8a;
+    --p-rule: rgba(30, 58, 138, 0.2);
+  }
+
+  /* 2. MODERN — sans-serif, indigo, minimal */
+  .paper-sheet[data-template="modern"] {
+    --p-bg: #ffffff;
+    --p-ink: #0f172a;
+    --p-ink-soft: #64748b;
+    --p-accent: #4f46e5;
+    --p-rule: rgba(79, 70, 229, 0.18);
+    --p-font-heading: 'Plus Jakarta Sans', system-ui, sans-serif;
+    --p-font-body: 'Inter', system-ui, sans-serif;
+    --p-letter-spacing: -0.02em;
+  }
+
+  /* 3. ACADEMIC — Georgia serif, forest green */
+  .paper-sheet[data-template="academic"] {
+    --p-bg: #ffffff;
+    --p-ink: #1f2937;
+    --p-ink-soft: #4b5563;
+    --p-accent: #166534;
+    --p-rule: rgba(22, 101, 52, 0.22);
+    --p-font-heading: Georgia, 'Times New Roman', serif;
+    --p-font-body: Georgia, 'Times New Roman', serif;
+    --p-letter-spacing: 0.01em;
+  }
+
+  /* 4. BOLD — heavy sans, black */
+  .paper-sheet[data-template="bold"] {
+    --p-bg: #ffffff;
+    --p-ink: #000000;
+    --p-ink-soft: #262626;
+    --p-accent: #000000;
+    --p-rule: rgba(0, 0, 0, 0.35);
+    --p-font-heading: 'Plus Jakarta Sans', system-ui, sans-serif;
+    --p-font-body: 'Inter', system-ui, sans-serif;
+    --p-letter-spacing: -0.03em;
+  }
+
+  /* 5. ELEGANT — Playfair, burgundy, gold accents */
+  .paper-sheet[data-template="elegant"] {
+    --p-bg: #fbf8f1;
+    --p-ink: #44403c;
+    --p-ink-soft: #78716c;
+    --p-accent: #7c2d12;
+    --p-rule: rgba(120, 113, 108, 0.35);
+    --p-font-heading: 'Playfair Display', Georgia, serif;
+    --p-font-body: 'Playfair Display', Georgia, serif;
+    --p-letter-spacing: 0.03em;
+  }
+
+  /* 6. COMPACT — small sans, slate, tight */
+  .paper-sheet[data-template="compact"] {
+    --p-bg: #ffffff;
+    --p-ink: #1e293b;
+    --p-ink-soft: #64748b;
+    --p-accent: #475569;
+    --p-rule: rgba(71, 85, 105, 0.18);
+    --p-font-heading: 'Inter', system-ui, sans-serif;
+    --p-font-body: 'Inter', system-ui, sans-serif;
+    --p-letter-spacing: -0.01em;
+  }
+
+  /* 7. FORMAL — Georgia, dark red, bordered */
+  .paper-sheet[data-template="formal"] {
+    --p-bg: #ffffff;
+    --p-ink: #1f2937;
+    --p-ink-soft: #4b5563;
+    --p-accent: #991b1b;
+    --p-rule: rgba(153, 27, 27, 0.28);
+    --p-font-heading: Georgia, 'Times New Roman', serif;
+    --p-font-body: Georgia, 'Times New Roman', serif;
+    --p-letter-spacing: 0.01em;
+    box-shadow:
+      0 2px 4px rgba(15, 23, 42, 0.06),
+      0 24px 48px -12px rgba(15, 23, 42, 0.18),
+      inset 0 0 0 1.5px rgba(153, 27, 27, 0.15);
+  }
+
+  /* 8. CONTEMPORARY — Plus Jakarta, violet, gradient rule */
+  .paper-sheet[data-template="contemporary"] {
+    --p-bg: #ffffff;
+    --p-ink: #0f172a;
+    --p-ink-soft: #64748b;
+    --p-accent: #7c3aed;
+    --p-rule: rgba(124, 58, 237, 0.25);
+    --p-font-heading: 'Plus Jakarta Sans', system-ui, sans-serif;
+    --p-font-body: 'Inter', system-ui, sans-serif;
+    --p-letter-spacing: -0.02em;
+  }
+
+  /* 9. VINTAGE — italic Playfair, sepia, cream */
+  .paper-sheet[data-template="vintage"] {
+    --p-bg: #fdf8ec;
+    --p-ink: #44403c;
+    --p-ink-soft: #78716c;
+    --p-accent: #78716c;
+    --p-rule: rgba(120, 113, 108, 0.35);
+    --p-font-heading: 'Playfair Display', Georgia, serif;
+    --p-font-body: Georgia, 'Times New Roman', serif;
+    --p-letter-spacing: 0.015em;
+    background-image:
+      radial-gradient(circle at 30% 20%, rgba(120, 90, 40, 0.04) 0%, transparent 40%),
+      radial-gradient(circle at 70% 80%, rgba(120, 90, 40, 0.03) 0%, transparent 40%);
+  }
+
+  /* 10. MINIMAL — pure sans, black, no decoration */
+  .paper-sheet[data-template="minimal"] {
+    --p-bg: #ffffff;
+    --p-ink: #0f172a;
+    --p-ink-soft: #64748b;
+    --p-accent: #000000;
+    --p-rule: rgba(226, 232, 240, 0.9);
+    --p-font-heading: 'Inter', system-ui, sans-serif;
+    --p-font-body: 'Inter', system-ui, sans-serif;
+    --p-letter-spacing: -0.015em;
+    box-shadow:
+      0 1px 3px rgba(0, 0, 0, 0.04),
+      0 12px 32px -8px rgba(0, 0, 0, 0.08);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════
+   PRINT
+   ═══════════════════════════════════════════════════════ */
+@media print {
+  body { background: white !important; }
+  .no-print { display: none !important; }
+  .paper-sheet {
+    box-shadow: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background-color: white !important;
+    background-image: none !important;
+  }
+  .paper-sheet::before { display: none !important; }
+  aside, nav, .sticky { display: none !important; }
+  main { margin-left: 0 !important; padding: 0 !important; }
+  @page { margin: 15mm; }
+}
