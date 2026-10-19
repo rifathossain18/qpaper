@@ -24,6 +24,10 @@ CSRF_TRUSTED_ORIGINS = [
     'https://qpaper-backend-tefq.onrender.com',
 ]
 
+CORS_ALLOWED_ORIGINS = [
+    "https://qpaper-frontend.onrender.com", 
+]
+
 # Render-এ HTTPS প্রক্সির পেছনে থাকার কারণে
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 CSRF_COOKIE_SECURE = True
