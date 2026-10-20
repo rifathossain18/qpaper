@@ -17,21 +17,31 @@ if not SECRET_KEY:
 
 DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
 
+# ---------- হোস্ট ও ডোমেইন ----------
+# Vercel-এর প্রজেক্ট ডোমেইন (আপনার আসল ডোমেইন দিয়ে বদলে নিন)
+VERCEL_DOMAIN = os.environ.get('VERCEL_DOMAIN', 'qpaper.vercel.app')
+
 ALLOWED_HOSTS = [
-    'qpaper-backend-tefq.onrender.com',
+    VERCEL_DOMAIN,
+    '.vercel.app',                     # Vercel-এর সব প্রিভিউ ডোমেইন
+    'qpaper-backend-tefq.onrender.com', # পুরোনো Render ডোমেইন (ঐচ্ছিক)
     'localhost',
     '127.0.0.1',
 ]
 
-# ফ্রন্টএন্ডের ঠিকানা (একবারই ডিফাইন করুন, পুরো ফাইলে আর কোথাও নয়)
-FRONTEND_URL = "https://qpaper-frontend.onrender.com"
+# ফ্রন্টএন্ডের ঠিকানা (Vercel-এ frontend ও backend একই ডোমেইনে)
+FRONTEND_URL = f"https://{VERCEL_DOMAIN}"
 
 CSRF_TRUSTED_ORIGINS = [
+    f"https://{VERCEL_DOMAIN}",
+    "https://*.vercel.app",            # প্রিভিউ ডেপ্লয়মেন্টের জন্য
     'https://qpaper-backend-tefq.onrender.com',
-    FRONTEND_URL,
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'http://127.0.0.1:5173',
 ]
 
-# Render-এ HTTPS প্রক্সির পেছনে থাকার কারণে
+# Vercel-এ HTTPS প্রক্সির পেছনে থাকার কারণে
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
@@ -56,7 +66,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',          # সেশন মিডলওয়্যারের পরে, Common-এর আগে
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -83,7 +93,7 @@ TEMPLATES = [{
 WSGI_APPLICATION = 'config.wsgi.application'
 ASGI_APPLICATION = 'config.asgi.application'
 
-# ---------- ডেটাবেস ----------
+# ---------- ডেটাবেস (Neon) ----------
 DATABASES = {
     'default': dj_database_url.config(
         default=os.environ.get('DATABASE_URL'),
@@ -134,16 +144,23 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
 }
 
-# ---------- CORS (একবারই ডিফাইন করুন) ----------
+# ---------- CORS ----------
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOWED_ORIGINS = [
     FRONTEND_URL,
+    "https://*.vercel.app",
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'http://127.0.0.1:5173',
 ]
 
-# JWT ব্যবহার করলে Authorization হেডারটি explicitly অনুমোদন করতে হবে
+# CORS_ALLOWED_ORIGIN_REGEXES দিয়ে wildcard ডোমেইন হ্যান্ডেল করুন
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^https://.*\.vercel\.app$",
+]
+
 CORS_ALLOW_HEADERS = list(default_headers) + [
     "authorization",
 ]
 
-# ফ্রন্টএন্ড থেকে কুকি/ক্রেডেনশিয়াল পাঠালে এটি প্রয়োজন
 CORS_ALLOW_CREDENTIALS = True
