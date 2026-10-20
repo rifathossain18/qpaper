@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000/api',
+  // প্রোডাকশনে VITE_API_URL না থাকলেও '/api' ব্যবহার হবে, যা Vercel-এ ব্যাকএন্ডে রিরাইট হবে
+  baseURL: import.meta.env.VITE_API_URL || '/api',
 });
 
 api.interceptors.request.use((config) => {

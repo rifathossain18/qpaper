@@ -87,8 +87,7 @@ ASGI_APPLICATION = 'config.asgi.application'
 DATABASES = {
     'default': dj_database_url.config(
         default=os.environ.get('DATABASE_URL'),
-        conn_max_age=600,
-        ssl_require=True
+        conn_max_age=0  # Neon-এর জন্য 0 রাখা নিরাপদ
     )
 }
 
